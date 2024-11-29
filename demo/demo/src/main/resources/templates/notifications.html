@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>실시간 알림</title>
+  <script>
+        // SSE 연결
+        const eventSource = new EventSource('/notifications');
+
+        // 서버로부터 알림 메시지 수신
+        eventSource.onmessage = function(event) {
+            const notification = document.createElement('p');
+            notification.textContent = event.data; // 서버에서 받은 메시지
+            document.getElementById('notifications').appendChild(notification);
+        };
+
+        // 오류 처리
+        eventSource.onerror = function(event) {
+            console.error('SSE 연결 오류:', event);
+            alert('알림 서버와 연결할 수 없습니다.');
+        };
+    </script>
+</head>
+<body>
+<h1>실시간 알림</h1>
+<div id="notifications"></div>
+</body>
+</html>
